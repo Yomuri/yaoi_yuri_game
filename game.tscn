@@ -1,8 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkgmuh3ohly11"]
+[gd_scene load_steps=9 format=3 uid="uid://bkgmuh3ohly11"]
 
-[ext_resource type="Script" uid="uid://cosi0os35vkpd" path="res://Player/Player.gd" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://bsv4en3ivqtgw" path="res://player.gd" id="1_80nbo"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_mwb40"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80nbo"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_e2o6t"]
+sky_material = SubResource("ProceduralSkyMaterial_80nbo")
+
+[sub_resource type="Environment" id="Environment_feb5d"]
+background_mode = 2
+sky = SubResource("Sky_e2o6t")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_80nbo"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_80nbo"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_80nbo"]
 
@@ -11,12 +27,24 @@ points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607,
 
 [node name="Game" type="Node"]
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_feb5d")
+
 [node name="Ground" type="MeshInstance3D" parent="."]
-transform = Transform3D(50, 0, 0, 0, -2.18557e-06, 50, 0, -50, -2.18557e-06, 0, 0, 0)
-mesh = SubResource("QuadMesh_mwb40")
+transform = Transform3D(50, 0, 0, 0, 50, 6.82121e-13, 0, -6.82121e-13, 50, -0.0187292, 2.38419e-07, 0.00923586)
+mesh = SubResource("PlaneMesh_80nbo")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_80nbo")
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 script = ExtResource("1_80nbo")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
