@@ -17,7 +17,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 	if event is InputEventMouseMotion:
 		neck.rotate_y(-event.relative.x * .01)
-		#camera.rotate_y(-event.relative.x * .01)
 		
 		# Limits neck rotation
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-30), deg_to_rad(60))
